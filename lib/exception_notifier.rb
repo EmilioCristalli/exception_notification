@@ -10,6 +10,8 @@ module ExceptionNotifier
   autoload :BacktraceCleaner, 'exception_notifier/modules/backtrace_cleaner'
   autoload :Formatter, 'exception_notifier/modules/formatter'
 
+  autoload :ExceptionWrapper, 'exception_notifier/modules/exception_wrapper'
+
   autoload :Notifier, 'exception_notifier/notifier'
   autoload :EmailNotifier, 'exception_notifier/email_notifier'
   autoload :CampfireNotifier, 'exception_notifier/campfire_notifier'
@@ -22,6 +24,7 @@ module ExceptionNotifier
   autoload :SnsNotifier, 'exception_notifier/sns_notifier'
   autoload :GoogleChatNotifier, 'exception_notifier/google_chat_notifier'
   autoload :DatadogNotifier, 'exception_notifier/datadog_notifier'
+  autoload :DiscordNotifier, 'exception_notifier/discord_notifier'
 
   class UndefinedNotifierError < StandardError; end
 

@@ -10,6 +10,8 @@ module ExceptionNotifier
     def initialize(exception, opts = {})
       @exception = exception
 
+      @ex_wrapper = ExceptionNotifier::ExceptionWrapper.new(exception)
+
       @env = opts[:env]
       @errors_count = opts[:accumulated_errors_count].to_i
       @app_name = opts[:app_name] || rails_app_name
@@ -35,15 +37,17 @@ module ExceptionNotifier
     # A *NoMethodError* occurred in *home#index*.
     #
     def subtitle
+      ex_name = ex_wrapper.name
+
       errors_text = if errors_count > 1
                       errors_count
                     else
-                      exception.class.to_s =~ /^[aeiou]/i ? 'An' : 'A'
+                      ex_name =~ /^[aeiou]/i ? 'An' : 'A'
                     end
 
       in_action = " in *#{controller_and_action}*" if controller
 
-      "#{errors_text} *#{exception.class}* occurred#{in_action}."
+      "#{errors_text} *#{ex_name}* occurred#{in_action}."
     end
 
     #
@@ -104,7 +108,7 @@ module ExceptionNotifier
 
     private
 
-    attr_reader :exception, :env, :errors_count
+    attr_reader :exception, :env, :errors_count, :ex_wrapper
 
     def rails_app_name
       return unless defined?(::Rails) && ::Rails.respond_to?(:application)
